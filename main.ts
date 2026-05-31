@@ -1,10 +1,23 @@
 input.onButtonPressed(Button.A, function () {
-    radio.sendString("abcdefghijklmnopqrstuvwxyz")
-})
-radio.onReceivedString(function (receivedString) {
-    basic.showString("" + (receivedString.length))
+    let buf = Buffer.fromHex("ff");
+    let arr = buf.unpack("B", 0);
+    let out = "";
+    for (let a of arr) { out += `${a}, ` };
+    serial.writeLine(out);
+    basic.showNumber(arr[0]);
 })
 
+input.onButtonPressed(Button.B, function () {
+    let buf = Buffer.fromHex("ff");
+    let arr = buf.unpack("H", 0);
+    let out = "";
+    for (let a of arr) { out += `${a}, ` };
+    serial.writeLine(out);
+    basic.showNumber(arr[0]);
+})
+
+
+/*
 input.onButtonPressed(Button.B, function () {
     let buf = Buffer.pack("hhhhhhhhhhhh",
         [1,2,3,4,5,6,7,8,9,10,11,12]);
@@ -21,3 +34,4 @@ radio.onReceivedBuffer(function (receivedBuf) {
 })
 
 radio.setGroup(1)
+*/
